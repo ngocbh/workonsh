@@ -10,17 +10,16 @@ PROJECT_URLS = {
 }
 
 
-with open('requirements.txt') as f:
-    install_requires = f.read().strip().split('\n')
+install_requires = ['click']
 
-setup(name='conmato',
+setup(name='workonsh',
       description='Work on a server',
       author='Ngoc Bui',
       long_description=long_description,
       long_description_content_type="text/markdown",
       project_urls=PROJECT_URLS,
       author_email='ngocbh.pt@gmail.com',
-      version='0.0.3',
+      version='0.0.2',
       entry_points='''
         [console_scripts]
         workonsh=workonsh.main:main
