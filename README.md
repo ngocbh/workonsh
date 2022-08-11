@@ -2,7 +2,9 @@
 A live synchronizer local and remote machine. Similar to lsyncd
 
 ## Install
-From pypi
+Requirements: `fswatch` and `rsync`.
+
+To install from pypi
 
 ```
 pip install workonsh
