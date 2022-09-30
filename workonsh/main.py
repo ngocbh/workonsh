@@ -88,7 +88,11 @@ def run_rsync(src, dest, exclude, filter, dry_run=False):
     '--rsync-interval', '-i', type=int, default=5,
     help="Time interval to run rsync."
 )
-def main(project_name, src, dest, exclude, filter, log_file, rsync_interval):
+@click.option(
+    '--yes', '-y', is_flag=True,
+    help="Don't ask any interactive questions; pretend 'source-to-dest' for initial sync"
+)
+def main(project_name, src, dest, exclude, filter, log_file, rsync_interval, yes):
     logger = make_logger(log_file)
     exclude_with_filter = list(exclude)
     srcn = os.path.join(src, f"{project_name}")
@@ -114,7 +118,11 @@ Or you could sync the newer version of dest ({destn}) to src ({srcn}) [d] \n \
 Or terminate the process [t]!!!\n \
 !!!! BECAREFUL -- THIS IS IRREVERSIBLE!!!!\n \
 Choose [s/d/T]:...", end='')
-        choice = input().lower()
+        if yes:
+            choice = 's'
+            print(choice)
+        else:
+            choice = input().lower()
         terminate = False
         frm, to = None, None
         if choice == 's':
@@ -129,7 +137,11 @@ Choose [s/d/T]:...", end='')
             print(f"Check dry run first...")
             run_rsync(frm, to, exclude, filter, dry_run=True)
             print(f"Do you want to proceed [y, N]...", end='')
-            proceed = input().lower()
+            if yes:
+                proceed = 'y'
+                print(proceed)
+            else:
+                proceed = input().lower()
             if proceed == 'y':
                 run_rsync(frm, to, exclude, filter, dry_run=False)
             else:
